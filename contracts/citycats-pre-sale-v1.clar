@@ -22,11 +22,11 @@
         ;; (asserts! (is-none (map-get? participant tx-sender)) ERR-ALREADY-PARTICIPATED)
         (asserts! (<= count u5) ERR-AMOUNT-EXCEED)
         (asserts! (> count u0) ERR-AMOUNT-SMALL)
-        (let 
+        (let
             (
                 (totalDepositAmount (* depositAmount count))
                 (currentId (var-get last-id))
-                
+
             )
             (try! (stx-transfer? totalDepositAmount tx-sender (as-contract tx-sender)))
 
@@ -58,7 +58,7 @@
                         )
                     )
                 )
-            )   
+            )
         )
     )
 )

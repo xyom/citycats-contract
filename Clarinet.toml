@@ -1,0 +1,11 @@
+[project]
+name = "citycats"
+authors = []
+description = ""
+telemetry = true
+requirements = []
+analysis = ["check_checker"]
+costs_version = 2
+[contracts.citycats-pre-sale-v1]
+path = "contracts/citycats-pre-sale-v1.clar"
+depends_on = []

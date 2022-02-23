@@ -1,5 +1,4 @@
-(impl-trait 'ST1AE8AYE8GCXVX4711Y9B8D7BKVTYFYQTDKJJ3JR.nft-trait.nft-trait)
-(use-trait commission-trait .commission-trait.commission)
+(impl-trait .sip-009-trait-ft-standard.nft-trait)
 
 (define-non-fungible-token citycats uint)
 
@@ -77,34 +76,20 @@
   ;; Make sure to replace citycats
   (ok (nft-get-owner? citycats id)))
 
-;; SIP009: Get the last token ID
-(define-read-only (get-last-token-id)
-  (if (< (var-get last-id) STX-MINT-LIMIT)
-    (ok (var-get last-id))
-  )
-)
-
 ;; SIP009: Get the token URI. You can set it to any other URI
 (define-read-only (get-token-uri (token-id uint))
-  (if (< token-id u5001)
-    (ok (some (concat (concat (var-get base-uri) (unwrap-panic (contract-call? .conversion lookup token-id))) ".json")))
-    (ok (some (concat (concat (var-get base-uri) (unwrap-panic (contract-call? .conversion-v2 lookup (- token-id u5001)))) ".json")))
-    )
+  (ok (some (concat (concat (var-get base-uri) (unwrap-panic (contract-call? .index-conversion lookup token-id))) ".json")))
 )
 
-;; SIP009: Get the token URI. You can set it to any other URI
-(define-read-only (get-total-royalty)
-  (ok (+ (+ (var-get royalty-1) (var-get royalty-2)) (var-get royalty-3)))
-)
-
-(define-read-only (get-last-id)
+;; SIP009: Get the last token ID
+(define-read-only (get-last-token-id)
     (ok (var-get last-id))
 )
 
 (define-read-only (get-contract-uri)
   (ok (var-get contract-uri)))
 
-;; Mint - pre / public first / public second
+;; MINT: sales for pre and public first and public second
 (define-public (pre-mint (new-owner principal) (mint-amount uint))
     (let (
         (cost-per-mint (var-get stx-cost-per-pre-mint))
@@ -112,29 +97,29 @@
       )
       (asserts! (is-pre-mint) ERR-NOT-AUTHORIZED)
       (begin
-        (mint principal cost-per-mint mint-amount mint-limit))
+        (mint new-owner cost-per-mint mint-amount mint-limit))
     )
 )
 
-(define-public (public-first-mint (new-owner principal))
+(define-public (public-first-mint (new-owner principal) (mint-amount uint))
     (let (
         (cost-per-mint (var-get stx-cost-per-public-first-mint))
         (mint-limit (var-get public-first-mint-limit))
       )
       (asserts! (is-pre-mint) ERR-NOT-AUTHORIZED)
       (begin
-        (mint principal cost-per-mint mint-amount mint-limit))
+        (mint new-owner cost-per-mint mint-amount mint-limit))
     )
 )
 
-(define-public (public-second-mint (new-owner principal))
+(define-public (public-second-mint (new-owner principal) (mint-amount uint))
     (let (
         (cost-per-mint (var-get stx-cost-per-public-second-mint))
         (mint-limit (var-get public-second-mint-limit))
       )
       (asserts! (is-pre-mint) ERR-NOT-AUTHORIZED)
       (begin
-        (mint principal cost-per-mint mint-amount mint-limit))
+        (mint new-owner cost-per-mint mint-amount mint-limit))
     )
 )
 
@@ -232,5 +217,5 @@
 (define-public (set-stx-cost-per-public-second-mint (amount uint))
   (begin
     (asserts! (is-eq tx-sender CONTRACT-OWNER) ERR-NOT-AUTHORIZED)
-    (var-set stx-stx-cost-per-public-second-mint amount)
+    (var-set stx-cost-per-public-second-mint amount)
     (ok true)))

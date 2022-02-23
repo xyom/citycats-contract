@@ -1,11 +1,20 @@
 [project]
 name = "citycats"
-authors = []
+authors = ["citycats devops"]
 description = ""
 telemetry = true
 requirements = []
 analysis = ["check_checker"]
 costs_version = 2
-[contracts.citycats-pre-sale-v1]
-path = "contracts/citycats-pre-sale-v1.clar"
+
+[contracts.citycats-sale]
+path = "contracts/citycats-sale.clar"
+depends_on = ["sip-009-trait-ft-standard", "index-conversion"]
+
+[contracts.sip-009-trait-ft-standard]
+path = "contracts/external/sip-009-nft-trait-standard.clar"
+depends_on = []
+
+[contracts.index-conversion]
+path = "contracts/external/index-conversion.clar"
 depends_on = []

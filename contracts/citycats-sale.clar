@@ -37,8 +37,10 @@
 
 (define-data-var base-uri (string-ascii 100) "ipfs://placeholder/")
 (define-data-var contract-uri (string-ascii 100) "ipfs://placeholder")
+
 (define-data-var treasure-address principal 'ST1AE8AYE8GCXVX4711Y9B8D7BKVTYFYQTDKJJ3JR)
-(define-map mint-address bool principal)
+
+(define-map pre-mint-whitelist-address bool principal)
 
 ;; Token count for account
 (define-read-only (get-balance (account principal))
@@ -126,7 +128,7 @@
 (define-private (mint (new-owner principal) (price uint) (mint-amount uint) (mint-limit uint))
     (let (
         (next-id (+ u1 (var-get last-id)))
-    )
+      )
       (asserts! (< (var-get last-id) mint-limit) ERR-SOLD-OUT)
       (match (nft-mint? citycats next-id new-owner)
         success
@@ -167,41 +169,72 @@
 
 ;; Check if it's owner
 (define-private (is-owner (id uint))
-  (let ((owner (unwrap! (nft-get-owner? citycats id) false)))
-    (or (is-eq tx-sender owner) (is-eq contract-caller owner))))
-
+  (let (
+    (owner (unwrap! (nft-get-owner? citycats id) false))
+    )
+    (or (is-eq tx-sender owner) (is-eq contract-caller owner))
+  )
+)
 
 ;; Set base uri
 (define-public (set-base-uri (new-base-uri (string-ascii 100)))
   (begin
     (asserts! (is-eq tx-sender CONTRACT-OWNER) ERR-NOT-AUTHORIZED)
     (var-set base-uri new-base-uri)
-    (ok true)))
+    (ok true)
+  )
+)
 
 ;; Set contract uri
 (define-public (set-contract-uri (new-contract-uri (string-ascii 100)))
   (begin
     (asserts! (is-eq tx-sender CONTRACT-OWNER) ERR-NOT-AUTHORIZED)
     (var-set contract-uri new-contract-uri)
-    (ok true))
+    (ok true)
+  )
 )
 
-;; Manage the Mint
+;; Manage the pre mint
 (define-private (is-pre-mint)
-  (let ((the-mint
-          (unwrap! (map-get? mint-address true)
-                    false)))
-    (is-eq contract-caller the-mint)))
+  (let (
+      (the-mint (unwrap! (map-get? pre-mint-whitelist-address true) false))
+    )
+    (is-eq contract-caller the-mint)
+  )
+)
+  
+;; Manage the first public mint
+(define-private (is-first-public-mint)
+  (let (
+      (the-mint (unwrap! (map-get? pre-mint-whitelist-address true) false))
+    )
+    (is-eq contract-caller the-mint)
+  )
+)
 
-;; can only be called once
-(define-public (set-mint-address)
-  (let ((the-mint (map-get? mint-address true)))
+;; Manage the second public mint
+(define-private (is-second-public-mint)
+  (let (
+      (the-mint (unwrap! (map-get? pre-mint-whitelist-address true) false))
+    )
+    (is-eq contract-caller the-mint)
+  )
+)
+
+;; Set whitelist for pre-minting
+(define-public (set-pre-mint-whitelist-address)
+  (let (
+      (the-mint (map-get? pre-mint-whitelist-address true))
+    )
     (asserts! (and (is-none the-mint)
-              (map-insert mint-address true tx-sender))
-                ERR-MINT-ALREADY-SET)
-    (ok tx-sender)))
+      (map-insert pre-mint-whitelist-address true tx-sender))
+      ERR-MINT-ALREADY-SET
+    )
+    (ok tx-sender)
+  )
+)
 
-;; set for stx cost per mint
+;; Set for stx cost per mint
 (define-public (set-stx-cost-per-pre-mint (amount uint))
   (begin
     (asserts! (is-eq tx-sender CONTRACT-OWNER) ERR-NOT-AUTHORIZED)

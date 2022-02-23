@@ -23,7 +23,19 @@
 
 ;; Define Variables
 (define-data-var last-id uint u0)
-(define-data-var stx-cost-per-mint uint u45000000) ;; Minting price: 45STX
+
+(define-data-var stx-cost-per-pre-mint uint u45000000) ;; Minting price: 45 STX
+(define-data-var stx-cost-per-public-first-mint uint u45000000) ;; Minting price: 45 STX
+(define-data-var stx-cost-per-public-second-mint uint u45000000) ;; Minting price: 45 STX
+
+(define-data-var pre-mint-limit uint u100) 
+(define-data-var public-first-mint-limit uint u1000)
+(define-data-var public-second-mint-limit uint u1000)
+
+(define-data-var pre-mint-block-height uint u1) 
+(define-data-var public-first-mint-block-height uint u2)
+(define-data-var public-second-mint-block-height uint u3)
+
 (define-data-var base-uri (string-ascii 100) "ipfs://placeholder/")
 (define-data-var contract-uri (string-ascii 100) "ipfs://placeholder")
 (define-data-var treasure-address principal 'ST1AE8AYE8GCXVX4711Y9B8D7BKVTYFYQTDKJJ3JR)
@@ -92,20 +104,45 @@
 (define-read-only (get-contract-uri)
   (ok (var-get contract-uri)))
 
+;; Mint - pre / public first / public second
+(define-public (pre-mint (new-owner principal) (mint-amount uint))
+    (let (
+        (cost-per-mint (var-get stx-cost-per-pre-mint))
+        (mint-limit (var-get pre-mint-limit))
+      )
+      (asserts! (is-pre-mint) ERR-NOT-AUTHORIZED)
+      (begin
+        (mint principal cost-per-mint mint-amount mint-limit))
+    )
+)
 
-(define-public (pre-mint (new-owner principal))
-    (begin
-        (asserts! (is-pre-mint) ERR-NOT-AUTHORIZED)
-        (mint principal)))
+(define-public (public-first-mint (new-owner principal))
+    (let (
+        (cost-per-mint (var-get stx-cost-per-public-first-mint))
+        (mint-limit (var-get public-first-mint-limit))
+      )
+      (asserts! (is-pre-mint) ERR-NOT-AUTHORIZED)
+      (begin
+        (mint principal cost-per-mint mint-amount mint-limit))
+    )
+)
 
-;; todo: first, second public mint
+(define-public (public-second-mint (new-owner principal))
+    (let (
+        (cost-per-mint (var-get stx-cost-per-public-second-mint))
+        (mint-limit (var-get public-second-mint-limit))
+      )
+      (asserts! (is-pre-mint) ERR-NOT-AUTHORIZED)
+      (begin
+        (mint principal cost-per-mint mint-amount mint-limit))
+    )
+)
 
-(define-private (mint (new-owner principal))
+(define-private (mint (new-owner principal) (price uint) (mint-amount uint) (mint-limit uint))
     (let (
         (next-id (+ u1 (var-get last-id)))
-        (price (var-get stx-cost-per-mint))
     )
-      (asserts! (< (var-get last-id) STX-MINT-LIMIT) ERR-SOLD-OUT)
+      (asserts! (< (var-get last-id) mint-limit) ERR-SOLD-OUT)
       (match (nft-mint? citycats next-id new-owner)
         success
         (let
@@ -122,6 +159,7 @@
             (ok true)))
         error (err (* error u10000)))))
 
+;; Burn
 (define-public (burn (id uint) (owner principal))
     (let (
         (token-owner (unwrap-panic (unwrap-panic (get-owner id))))
@@ -142,7 +180,8 @@
     )
 )
 
-(define-private (is-sender-owner (id uint))
+;; Check if it's owner
+(define-private (is-owner (id uint))
   (let ((owner (unwrap! (nft-get-owner? citycats id) false)))
     (or (is-eq tx-sender owner) (is-eq contract-caller owner))))
 
@@ -177,8 +216,21 @@
                 ERR-MINT-ALREADY-SET)
     (ok tx-sender)))
 
-(define-public (set-stx-cost (amount uint))
+;; set for stx cost per mint
+(define-public (set-stx-cost-per-pre-mint (amount uint))
   (begin
     (asserts! (is-eq tx-sender CONTRACT-OWNER) ERR-NOT-AUTHORIZED)
-    (var-set stx-cost-per-mint amount)
+    (var-set stx-cost-per-pre-mint amount)
+    (ok true)))
+
+(define-public (set-stx-cost-per-public-first-mint (amount uint))
+  (begin
+    (asserts! (is-eq tx-sender CONTRACT-OWNER) ERR-NOT-AUTHORIZED)
+        (var-set stx-cost-per-public-first-mint amount)
+    (ok true)))
+
+(define-public (set-stx-cost-per-public-second-mint (amount uint))
+  (begin
+    (asserts! (is-eq tx-sender CONTRACT-OWNER) ERR-NOT-AUTHORIZED)
+    (var-set stx-stx-cost-per-public-second-mint amount)
     (ok true)))

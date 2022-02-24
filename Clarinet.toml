@@ -7,14 +7,18 @@ requirements = []
 analysis = ["check_checker"]
 costs_version = 2
 
-[contracts.citycats-sale]
-path = "contracts/citycats-sale.clar"
-depends_on = ["sip-009-trait-ft-standard", "index-conversion"]
+[contracts.citycats-nft-mint]
+path = "contracts/citycats-nft-mint.clar"
+depends_on = ["citycats-nft"]
+
+[contracts.citycats-nft]
+path = "contracts/citycats-nft.clar"
+depends_on = ["sip-009-trait-ft-standard", "commission-trait"]
 
 [contracts.sip-009-trait-ft-standard]
 path = "contracts/external/sip-009-nft-trait-standard.clar"
 depends_on = []
 
-[contracts.index-conversion]
-path = "contracts/external/index-conversion.clar"
+[contracts.commission-trait]
+path = "contracts/external/commission-trait.clar"
 depends_on = []

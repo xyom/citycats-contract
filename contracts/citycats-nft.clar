@@ -28,10 +28,16 @@
 (define-data-var last-id uint u0)
 (define-data-var mintpass-sale-active bool false)
 (define-data-var metadata-frozen bool false)
-(define-data-var base-uri (string-ascii 80) "ipfs://{place holder}/{id}")
+
+;; Store the root token uri used to query metadata
+(define-data-var base-token-uri (string-ascii 210) "https://{placeHolder}/api/metadata/")
 
 (define-constant contract-uri "ipfs://{place holder}")
-(define-constant proof-hash "{hash}")
+
+;; Provance hash for the images
+(define-data-var provenance-hash (string-ascii 256) "")
+
+;; Store the mint address allowed to trigger minting
 (define-map mint-address bool principal)
 
 ;; Token count for account
@@ -71,8 +77,12 @@
   (ok (var-get last-id)))
 
 ;; SIP009: Get the token URI. You can set it to any other URI
-(define-read-only (get-token-uri (id uint))
-  (ok (some (var-get base-uri))))
+(define-read-only (get-token-uri (token-id uint))
+  (ok (some (concat (concat (var-get base-token-uri) (uint-to-string token-id)) ".json"))))
+
+;; Return the provenance hash
+(define-read-only (get-provenance-hash)
+  (ok (var-get provenance-hash)))
 
 (define-read-only (get-contract-uri)
   (ok contract-uri))
@@ -130,12 +140,12 @@
     (print {a: "buy-in-ustx", id: id})
     (ok true)))
 
-;; Set base uri
-(define-public (set-base-uri (new-base-uri (string-ascii 80)))
+;; Set base token uri
+(define-public (set-base-token-uri (new-base-token-uri (string-ascii 80)))
   (begin
     (asserts! (is-eq tx-sender CONTRACT-OWNER) ERR-NOT-AUTHORIZED)
     (asserts! (not (var-get metadata-frozen)) ERR-METADATA-FROZEN)
-    (var-set base-uri new-base-uri)
+    (var-set base-token-uri new-base-token-uri)
     (ok true)))
 
 ;; Freeze metadata
@@ -159,3 +169,27 @@
               (map-insert mint-address true tx-sender))
                 ERR-MINT-ALREADY-SET)
     (ok tx-sender)))
+
+;; Utils to convert an uint to string
+;; Clarity doesn't support uint-to-string natively for now
+;; Code for uint to string - START
+(define-constant LIST_40 (list
+  true true true true true true true true true true
+  true true true true true true true true true true
+  true true true true true true true true true true
+  true true true true true true true true true true
+))
+
+(define-read-only (uint-to-string (value uint))
+  (get return (fold uint-to-string-clojure LIST_40 {value: value, return: ""}))
+)
+
+(define-read-only (uint-to-string-clojure (i bool) (data {value: uint, return: (string-ascii 40)}))
+  (if (> (get value data) u0)
+    {
+      value: (/ (get value data) u10),
+      return: (unwrap-panic (as-max-len? (concat (unwrap-panic (element-at "0123456789" (mod (get value data) u10))) (get return data)) u40))
+    }
+    data
+  )
+)

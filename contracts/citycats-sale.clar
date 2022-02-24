@@ -18,7 +18,6 @@
 (define-constant ERR-LISTING (err u507))
 (define-constant ERR-ONE-MINT-PER-WALLET (err u508))
 (define-constant ERR-BEFORE-MINT-TIME (err u509))
-(define-constant ERR-AFTER-MINT-TIME (err u510))
 
 ;; Define Variables
 (define-data-var last-id uint u0)
@@ -40,7 +39,7 @@
 
 (define-data-var treasure-address principal 'ST1AE8AYE8GCXVX4711Y9B8D7BKVTYFYQTDKJJ3JR)
 
-(define-map pre-mint-whitelist-address bool principal)
+(define-map pre-mint-whitelist-address principal bool)
 
 ;; Token count for account
 (define-read-only (get-balance (account principal))
@@ -96,8 +95,10 @@
     (let (
         (cost-per-mint (var-get stx-cost-per-pre-mint))
         (mint-limit (var-get pre-mint-limit))
+        (is-mint-owner (unwrap-panic (map-get? pre-mint-whitelist-address new-owner)))
       )
-      (asserts! (is-pre-mint) ERR-NOT-AUTHORIZED)
+      (asserts! is-mint-owner ERR-NOT-AUTHORIZED)
+      (asserts! (>= (var-get pre-mint-block-height) block-height) ERR-BEFORE-MINT-TIME)
       (begin
         (mint new-owner cost-per-mint mint-amount mint-limit))
     )
@@ -108,7 +109,7 @@
         (cost-per-mint (var-get stx-cost-per-public-first-mint))
         (mint-limit (var-get public-first-mint-limit))
       )
-      (asserts! (is-pre-mint) ERR-NOT-AUTHORIZED)
+      (asserts! (>= (var-get public-first-mint-block-height) block-height) ERR-BEFORE-MINT-TIME)
       (begin
         (mint new-owner cost-per-mint mint-amount mint-limit))
     )
@@ -119,7 +120,7 @@
         (cost-per-mint (var-get stx-cost-per-public-second-mint))
         (mint-limit (var-get public-second-mint-limit))
       )
-      (asserts! (is-pre-mint) ERR-NOT-AUTHORIZED)
+      (asserts! (>= (var-get public-second-mint-block-height) block-height) ERR-BEFORE-MINT-TIME)
       (begin
         (mint new-owner cost-per-mint mint-amount mint-limit))
     )
@@ -194,44 +195,12 @@
   )
 )
 
-;; Manage the pre mint
-(define-private (is-pre-mint)
-  (let (
-      (the-mint (unwrap! (map-get? pre-mint-whitelist-address true) false))
-    )
-    (is-eq contract-caller the-mint)
-  )
-)
-  
-;; Manage the first public mint
-(define-private (is-first-public-mint)
-  (let (
-      (the-mint (unwrap! (map-get? pre-mint-whitelist-address true) false))
-    )
-    (is-eq contract-caller the-mint)
-  )
-)
-
-;; Manage the second public mint
-(define-private (is-second-public-mint)
-  (let (
-      (the-mint (unwrap! (map-get? pre-mint-whitelist-address true) false))
-    )
-    (is-eq contract-caller the-mint)
-  )
-)
-
 ;; Set whitelist for pre-minting
 (define-public (set-pre-mint-whitelist-address)
-  (let (
-      (the-mint (map-get? pre-mint-whitelist-address true))
-    )
-    (asserts! (and (is-none the-mint)
-      (map-insert pre-mint-whitelist-address true tx-sender))
-      ERR-MINT-ALREADY-SET
-    )
+  (begin
+    (map-insert pre-mint-whitelist-address tx-sender true)
     (ok tx-sender)
-  )
+    )
 )
 
 ;; Set for stx cost per mint

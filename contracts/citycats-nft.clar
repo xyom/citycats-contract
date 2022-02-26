@@ -28,8 +28,8 @@
 (define-data-var metadata-frozen bool false)
 
 ;; Store the root token uri used to query metadata
-(define-data-var base-token-uri (string-ascii 210) "https://{placeHolder}/api/metadata/")
-(define-constant contract-uri "ipfs://{place holder}")
+(define-data-var base-token-uri (string-ascii 210) "ipfs://QmWe7tBAsy7RxDbg7x4WGqX33dS9px9p4PwQYNH3YDwpkH/")
+(define-constant contract-uri "ipfs://QmWe7tBAsy7RxDbg7x4WGqX33dS9px9p4PwQYNH3YDwpkH/citycats.clar")
 
 ;; Provance hash for the images
 (define-data-var provenance-hash (string-ascii 256) "")

@@ -21,7 +21,7 @@
 (define-constant ERR-FAILED-TO-TRANSFER-STX (err u108))
 
 ;; Withdraw wallets
-(define-constant TREASURE_WALLET 'SP39E0V32MC31C5XMZEN1TQ3B0PW2RQSJB8TKQEV9)
+(define-constant TREASURE_WALLET 'ST1AE8AYE8GCXVX4711Y9B8D7BKVTYFYQTDKJJ3JR) ;; FIXME
 
 ;; Define Variables
 (define-data-var last-id uint u0)
@@ -29,8 +29,8 @@
 (define-data-var metadata-frozen bool false)
 
 ;; Store the root token uri used to query metadata
-(define-data-var base-token-uri (string-ascii 210) "ipfs://Qmcy5HVZ5MWyhYAw8Q5UvMzvEFZaR85BgKTd7qXr8UmziS/")
-(define-constant contract-uri "ipfs://Qmcy5HVZ5MWyhYAw8Q5UvMzvEFZaR85BgKTd7qXr8UmziS/citycats.clar")
+(define-data-var base-token-uri (string-ascii 210) "ipfs://Qmcy5HVZ5MWyhYAw8Q5UvMzvEFZaR85BgKTd7qXr8UmziS/") ;; FIXME
+(define-constant contract-uri "ipfs://Qmcy5HVZ5MWyhYAw8Q5UvMzvEFZaR85BgKTd7qXr8UmziS/citycats.clar") ;; FIXME
 
 ;; Provance hash for the images
 (define-data-var provenance-hash (string-ascii 256) "")

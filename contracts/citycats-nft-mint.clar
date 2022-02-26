@@ -3,10 +3,11 @@
 (define-map treasure-count principal uint)
 
 ;; Define Constants
-(define-constant pre-sale-mint-price u35000000) ;; 35 STX
-(define-constant public-sale-mint-price u50000000) ;; 50 STX
+(define-constant pre-sale-mint-price u35000000) ;; FIXME: 35 STX (Draft)
+(define-constant public-sale-mint-price u50000000) ;; FIXME: 50 STX (Draft)
 
 (define-constant CONTRACT-OWNER tx-sender)
+
 (define-constant ERR-NOT-AUTHORIZED (err u201))
 (define-constant ERR-SALE-NOT-ACTIVE (err u202))
 (define-constant ERR-NO-TREASURE-AMOUNT-REMAINING (err u203))
@@ -104,11 +105,13 @@
     (var-set public-sale-active (not (var-get public-sale-active)))
     (ok (var-get public-sale-active))))
 
-;; Initialize
+;; Initialize address for minting
 (as-contract (contract-call? .citycats-nft set-mint-address))
 
 ;; Pre Mint Addresses
-(map-set presale-count 'SP39E0V32MC31C5XMZEN1TQ3B0PW2RQSJB8TKQEV9 u10)
+(map-set presale-count 'ST1AE8AYE8GCXVX4711Y9B8D7BKVTYFYQTDKJJ3JR u10) ;; FIXME: temporary address for test
+;; TODO: fill address and the number of NFTs allowed out
 
 ;; Treasure Mint Addresses
-(map-set treasure-count CONTRACT-OWNER u20)
+(map-set treasure-count CONTRACT-OWNER u20) ;; FIXME: temporary address and NFT amount for test
+;; TODO: fill address and the number of NFTs allowed out

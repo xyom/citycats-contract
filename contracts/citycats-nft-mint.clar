@@ -104,6 +104,7 @@
     (var-set public-sale-active (not (var-get public-sale-active)))
     (ok (var-get public-sale-active))))
 
+;; Initialize
 (as-contract (contract-call? .citycats-nft set-mint-address))
 
 ;; Pre Mint Addresses

@@ -1,4 +1,4 @@
-(impl-trait .sip-009-trait-ft-standard.nft-trait)
+(impl-trait .sip-009-nft-trait-standard.nft-trait)
 (use-trait commission-trait .commission-trait.commission)
 
 (define-non-fungible-token CityCats uint)

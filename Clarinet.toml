@@ -13,9 +13,9 @@ depends_on = ["citycats-nft"]
 
 [contracts.citycats-nft]
 path = "contracts/citycats-nft.clar"
-depends_on = ["sip-009-trait-ft-standard", "commission-trait"]
+depends_on = ["sip-009-nft-trait-standard", "commission-trait"]
 
-[contracts.sip-009-trait-ft-standard]
+[contracts.sip-009-nft-trait-standard]
 path = "contracts/external/sip-009-nft-trait-standard.clar"
 depends_on = []
 

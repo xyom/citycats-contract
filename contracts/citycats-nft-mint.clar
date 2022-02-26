@@ -107,7 +107,7 @@
 (as-contract (contract-call? .citycats-nft set-mint-address))
 
 ;; Pre Mint Addresses
-(map-set presale-count 'SP39E0V32MC31C5XMZEN1TQ3B0PW2RQSJB8TKQEV9 u5)
+(map-set presale-count 'SP39E0V32MC31C5XMZEN1TQ3B0PW2RQSJB8TKQEV9 u10)
 
 ;; Treasure Mint Addresses
-(map-set treasure-count CONTRACT-OWNER u5)
+(map-set treasure-count CONTRACT-OWNER u20)

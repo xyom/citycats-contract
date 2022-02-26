@@ -1,6 +1,3 @@
-;; use the SIP090 interface (testnet)
-;;live (impl-trait 'SP2PABAF9FTAJYNFZH93XENAJ8FVY99RRM50D2JG9.nft-trait.nft-trait)
-;;test (impl-trait 'ST1HTBVD3JG9C05J7HBJTHGR0GGW7KXW28M5JS8QE.nft-trait.nft-trait)
 (impl-trait .sip-009-trait-ft-standard.nft-trait)
 (use-trait commission-trait .commission-trait.commission)
 
@@ -12,6 +9,8 @@
 
 ;; Define Constants
 (define-constant CONTRACT-OWNER tx-sender)
+(define-constant CITYCATS-LIMIT u2050)
+
 (define-constant ERR-SOLD-OUT (err u300))
 (define-constant ERR-WRONG-COMMISSION (err u301))
 (define-constant ERR-NOT-AUTHORIZED (err u401))
@@ -19,7 +18,6 @@
 (define-constant ERR-METADATA-FROZEN (err u505))
 (define-constant ERR-MINT-ALREADY-SET (err u506))
 (define-constant ERR-LISTING (err u507))
-(define-constant CITYCATS-LIMIT u2050)
 
 ;; Withdraw wallets
 (define-constant TREASURE_WALLET 'SP39E0V32MC31C5XMZEN1TQ3B0PW2RQSJB8TKQEV9)
@@ -31,7 +29,6 @@
 
 ;; Store the root token uri used to query metadata
 (define-data-var base-token-uri (string-ascii 210) "https://{placeHolder}/api/metadata/")
-
 (define-constant contract-uri "ipfs://{place holder}")
 
 ;; Provance hash for the images
@@ -84,11 +81,11 @@
 (define-read-only (get-provenance-hash)
   (ok (var-get provenance-hash)))
 
+;; Return contract URI
 (define-read-only (get-contract-uri)
   (ok contract-uri))
 
-;; Mint new NFT
-;; can only be called from the Mint
+;; Mint new NFT - can only be called from the mint address
 (define-public (mint (new-owner principal) (price uint))
     (let ((next-id (+ u1 (var-get last-id))))
       (asserts! (called-from-mint) ERR-NOT-AUTHORIZED)
@@ -162,7 +159,7 @@
                     false)))
     (is-eq contract-caller the-mint)))
 
-;; can only be called once
+;; Set mint address - can only be called once
 (define-public (set-mint-address)
   (let ((the-mint (map-get? mint-address true)))
     (asserts! (and (is-none the-mint)
@@ -172,7 +169,7 @@
 
 ;; Utils to convert an uint to string
 ;; Clarity doesn't support uint-to-string natively for now
-;; Code for uint to string - START
+;; Code for uint to string
 (define-constant LIST_40 (list
   true true true true true true true true true true
   true true true true true true true true true true

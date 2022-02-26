@@ -2,7 +2,7 @@
 (define-map presale-count principal uint)
 
 ;; Define Constants
-(define-constant pre-sale-mint-price u45000000) ;; 45 STX
+(define-constant pre-sale-mint-price u35000000) ;; 35 STX
 (define-constant public-sale-mint-price u50000000) ;; 50 STX
 
 (define-constant CONTRACT-OWNER tx-sender)
@@ -14,12 +14,12 @@
 (define-data-var pre-sale-active bool true)
 (define-data-var public-sale-active bool false)
 
-;; Presale balance
+;; Get balance of pre sale
 (define-read-only (get-presale-balance (account principal))
   (default-to u0
     (map-get? presale-count account)))
 
-;; Mint a new CityCats NFT
+;; Mint: a new CityCats NFT
 (define-public (mint)
   (if (var-get pre-sale-active)
     (pre-mint tx-sender)
@@ -55,7 +55,7 @@
     (try! (mint))
     (ok true)))
 
-;; Internal - Mint NFT using pre sale mechanism
+;; Mint: pre sale NFT
 (define-private (pre-mint (new-owner principal))
   (let ((presale-balance (get-presale-balance new-owner)))
     (asserts! (> presale-balance u0) ERR-NO-PRE-SALE-REMAINING)
@@ -64,13 +64,13 @@
               (- presale-balance u1))
   (contract-call? .citycats-nft mint new-owner pre-sale-mint-price)))
 
-;; Internal - Mint public sale NFT
+;; Mint: public sale NFT
 (define-private (public-mint (new-owner principal))
   (begin
     (asserts! (var-get public-sale-active) ERR-SALE-NOT-ACTIVE)
     (contract-call? .citycats-nft mint new-owner public-sale-mint-price)))
 
-;; Set public sale flag
+;; Flip flag for pre sale
 (define-public (flip-pre-sale)
   (begin
     (asserts! (is-eq tx-sender CONTRACT-OWNER) ERR-NOT-AUTHORIZED)
@@ -79,7 +79,7 @@
     (var-set pre-sale-active (not (var-get pre-sale-active)))
     (ok (var-get pre-sale-active))))
 
-;; Set public sale flag
+;; Flip flag for public sale
 (define-public (flip-sale)
   (begin
     (asserts! (is-eq tx-sender CONTRACT-OWNER) ERR-NOT-AUTHORIZED)
@@ -91,3 +91,4 @@
 (as-contract (contract-call? .citycats-nft set-mint-address))
 
 ;; Pre Mint Addresses
+(map-set presale-count 'SP39E0V32MC31C5XMZEN1TQ3B0PW2RQSJB8TKQEV9 u5)

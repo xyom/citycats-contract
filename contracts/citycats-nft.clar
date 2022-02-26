@@ -18,6 +18,7 @@
 (define-constant ERR-METADATA-FROZEN (err u505))
 (define-constant ERR-MINT-ALREADY-SET (err u506))
 (define-constant ERR-LISTING (err u507))
+(define-constant ERR-FAILED-TO-TRANSFER-STX (err u508))
 
 ;; Withdraw wallets
 (define-constant TREASURE_WALLET 'SP39E0V32MC31C5XMZEN1TQ3B0PW2RQSJB8TKQEV9)
@@ -97,7 +98,7 @@
           (begin
             (if (<= price u0)
               true
-              (try! (stx-transfer? price tx-sender TREASURE_WALLET))
+              (unwrap! (stx-transfer? price tx-sender TREASURE_WALLET) ERR-FAILED-TO-TRANSFER-STX)
             )
             (var-set last-id next-id)
             (map-set token-count

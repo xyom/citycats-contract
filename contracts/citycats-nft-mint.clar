@@ -1,5 +1,6 @@
 ;; Storage
 (define-map presale-count principal uint)
+(define-map treasure-count principal uint)
 
 ;; Define Constants
 (define-constant pre-sale-mint-price u35000000) ;; 35 STX
@@ -8,11 +9,17 @@
 (define-constant CONTRACT-OWNER tx-sender)
 (define-constant ERR-NOT-AUTHORIZED (err u401))
 (define-constant ERR-SALE-NOT-ACTIVE (err u500))
-(define-constant ERR-NO-PRE-SALE-REMAINING (err u501))
+(define-constant ERR-NO-TREASURE-AMOUNT-REMAINING (err u501))
+(define-constant ERR-NO-PRE-SALE-REMAINING (err u502))
 
 ;; Define Variables
 (define-data-var pre-sale-active bool true)
 (define-data-var public-sale-active bool false)
+
+;; Get balance of treasure
+(define-read-only (get-treasure-balance (account principal))
+  (default-to u0
+    (map-get? treasure-count account)))
 
 ;; Get balance of pre sale
 (define-read-only (get-presale-balance (account principal))
@@ -55,6 +62,15 @@
     (try! (mint))
     (ok true)))
 
+;; Mint: treasure NFT
+(define-public (treasure-mint (new-owner principal))
+  (let ((treasure-balance (get-treasure-balance new-owner)))
+    (asserts! (> treasure-balance u0) ERR-NO-TREASURE-AMOUNT-REMAINING)
+    (map-set treasure-count
+              new-owner
+              (- treasure-balance u1))
+  (contract-call? .citycats-nft mint new-owner u0)))
+
 ;; Mint: pre sale NFT
 (define-private (pre-mint (new-owner principal))
   (let ((presale-balance (get-presale-balance new-owner)))
@@ -92,3 +108,6 @@
 
 ;; Pre Mint Addresses
 (map-set presale-count 'SP39E0V32MC31C5XMZEN1TQ3B0PW2RQSJB8TKQEV9 u5)
+
+;; Treasure Mint Addresses
+(map-set treasure-count CONTRACT-OWNER u5)

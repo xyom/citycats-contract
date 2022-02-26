@@ -28,8 +28,8 @@
 (define-data-var metadata-frozen bool false)
 
 ;; Store the root token uri used to query metadata
-(define-data-var base-token-uri (string-ascii 210) "ipfs://QmWe7tBAsy7RxDbg7x4WGqX33dS9px9p4PwQYNH3YDwpkH/")
-(define-constant contract-uri "ipfs://QmWe7tBAsy7RxDbg7x4WGqX33dS9px9p4PwQYNH3YDwpkH/citycats.clar")
+(define-data-var base-token-uri (string-ascii 210) "ipfs://Qmcy5HVZ5MWyhYAw8Q5UvMzvEFZaR85BgKTd7qXr8UmziS/")
+(define-constant contract-uri "ipfs://Qmcy5HVZ5MWyhYAw8Q5UvMzvEFZaR85BgKTd7qXr8UmziS/citycats.clar")
 
 ;; Provance hash for the images
 (define-data-var provenance-hash (string-ascii 256) "")
@@ -95,7 +95,10 @@
         (let
         ((current-balance (get-balance new-owner)))
           (begin
-            (try! (stx-transfer? price tx-sender TREASURE_WALLET))
+            (if (<= price u0)
+              true
+              (try! (stx-transfer? price tx-sender TREASURE_WALLET))
+            )
             (var-set last-id next-id)
             (map-set token-count
               new-owner

@@ -7,10 +7,10 @@
 (define-constant public-sale-mint-price u50000000) ;; 50 STX
 
 (define-constant CONTRACT-OWNER tx-sender)
-(define-constant ERR-NOT-AUTHORIZED (err u401))
-(define-constant ERR-SALE-NOT-ACTIVE (err u500))
-(define-constant ERR-NO-TREASURE-AMOUNT-REMAINING (err u501))
-(define-constant ERR-NO-PRE-SALE-REMAINING (err u502))
+(define-constant ERR-NOT-AUTHORIZED (err u201))
+(define-constant ERR-SALE-NOT-ACTIVE (err u202))
+(define-constant ERR-NO-TREASURE-AMOUNT-REMAINING (err u203))
+(define-constant ERR-NO-PRE-SALE-REMAINING (err u204))
 
 ;; Define Variables
 (define-data-var pre-sale-active bool true)

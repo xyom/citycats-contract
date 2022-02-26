@@ -11,14 +11,14 @@
 (define-constant CONTRACT-OWNER tx-sender)
 (define-constant CITYCATS-LIMIT u2050)
 
-(define-constant ERR-SOLD-OUT (err u300))
-(define-constant ERR-WRONG-COMMISSION (err u301))
-(define-constant ERR-NOT-AUTHORIZED (err u401))
-(define-constant ERR-NOT-FOUND (err u404))
-(define-constant ERR-METADATA-FROZEN (err u505))
-(define-constant ERR-MINT-ALREADY-SET (err u506))
-(define-constant ERR-LISTING (err u507))
-(define-constant ERR-FAILED-TO-TRANSFER-STX (err u508))
+(define-constant ERR-SOLD-OUT (err u100))
+(define-constant ERR-WRONG-COMMISSION (err u102))
+(define-constant ERR-NOT-AUTHORIZED (err u103))
+(define-constant ERR-NOT-FOUND (err u104))
+(define-constant ERR-METADATA-FROZEN (err u105))
+(define-constant ERR-MINT-ALREADY-SET (err u106))
+(define-constant ERR-LISTING (err u107))
+(define-constant ERR-FAILED-TO-TRANSFER-STX (err u108))
 
 ;; Withdraw wallets
 (define-constant TREASURE_WALLET 'SP39E0V32MC31C5XMZEN1TQ3B0PW2RQSJB8TKQEV9)

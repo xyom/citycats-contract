@@ -3,11 +3,11 @@
 (define-map treasure-count principal uint)
 
 ;; Define Constants
+(define-constant CONTRACT-OWNER tx-sender)
 (define-constant pre-sale-mint-price u35000000) ;; FIXME: 35 STX (Draft)
 (define-constant public-sale-mint-price u50000000) ;; FIXME: 50 STX (Draft)
 
-(define-constant CONTRACT-OWNER tx-sender)
-
+;; Define error codes
 (define-constant ERR-NOT-AUTHORIZED (err u201))
 (define-constant ERR-SALE-NOT-ACTIVE (err u202))
 (define-constant ERR-NO-TREASURE-AMOUNT-REMAINING (err u203))
@@ -16,6 +16,13 @@
 ;; Define Variables
 (define-data-var pre-sale-active bool true)
 (define-data-var public-sale-active bool false)
+
+;; Get activation of sale
+(define-read-only (get-pre-sale-active)
+  (ok CONTRACT-OWNER))
+
+(define-read-only (get-public-sale-active)
+  (ok (var-get public-sale-active)))
 
 ;; Get balance of treasure
 (define-read-only (get-treasure-balance (account principal))
@@ -97,7 +104,7 @@
     (ok (var-get pre-sale-active))))
 
 ;; Flip flag for public sale
-(define-public (flip-sale)
+(define-public (flip-public-sale)
   (begin
     (asserts! (is-eq tx-sender CONTRACT-OWNER) ERR-NOT-AUTHORIZED)
     ;; Disable the public sale

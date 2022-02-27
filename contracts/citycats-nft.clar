@@ -11,6 +11,7 @@
 (define-constant CONTRACT-OWNER tx-sender)
 (define-constant CITYCATS-LIMIT u2050)
 
+;; Define error codes
 (define-constant ERR-SOLD-OUT (err u100))
 (define-constant ERR-WRONG-COMMISSION (err u102))
 (define-constant ERR-NOT-AUTHORIZED (err u103))
@@ -25,7 +26,6 @@
 
 ;; Define Variables
 (define-data-var last-id uint u0)
-(define-data-var mintpass-sale-active bool false)
 (define-data-var metadata-frozen bool false)
 
 ;; Store the root token uri used to query metadata

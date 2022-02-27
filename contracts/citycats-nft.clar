@@ -29,8 +29,8 @@
 (define-data-var metadata-frozen bool false)
 
 ;; Store the root token uri used to query metadata
-(define-data-var base-token-uri (string-ascii 210) "ipfs://Qmcy5HVZ5MWyhYAw8Q5UvMzvEFZaR85BgKTd7qXr8UmziS/") ;; FIXME
-(define-constant contract-uri "ipfs://Qmcy5HVZ5MWyhYAw8Q5UvMzvEFZaR85BgKTd7qXr8UmziS/citycats.clar") ;; FIXME
+(define-data-var base-token-uri (string-ascii 210) "ipfs://QmSKXJ7WP7nseMKp5KbVWGhnBXqYeZN8TDHSNLxjFPzhYn/") ;; FIXME
+(define-constant contract-uri "ipfs://QmSnLYdA9Uq2bcZWnGAVsUA4zapkq1hnusocjo5H63GQ16") ;; FIXME
 
 ;; Provance hash for the images
 (define-data-var provenance-hash (string-ascii 256) "")

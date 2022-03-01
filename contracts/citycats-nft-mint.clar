@@ -19,7 +19,7 @@
 
 ;; Get activation of sale
 (define-read-only (get-pre-sale-active)
-  (ok CONTRACT-OWNER))
+  (ok (var-get pre-sale-active)))
 
 (define-read-only (get-public-sale-active)
   (ok (var-get public-sale-active)))

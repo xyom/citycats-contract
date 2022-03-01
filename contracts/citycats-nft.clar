@@ -149,6 +149,12 @@
     (var-set base-token-uri new-base-token-uri)
     (ok true)))
 
+;; Reveal
+(define-public (reveal (reveal-uri (string-ascii 80)))
+  (begin
+    (try! (set-base-token-uri reveal-uri))
+    (ok true)))
+
 ;; Freeze metadata
 (define-public (freeze-metadata)
   (begin

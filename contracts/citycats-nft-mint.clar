@@ -4,7 +4,7 @@
 
 ;; Define Constants
 (define-constant CONTRACT-OWNER tx-sender)
-(define-constant pre-sale-mint-price u35000000) ;; FIXME: 35 STX (Draft)
+(define-constant pre-sale-mint-price u50000000) ;; FIXME: 50 STX (Draft)
 (define-constant public-sale-mint-price u50000000) ;; FIXME: 50 STX (Draft)
 
 ;; Define error codes

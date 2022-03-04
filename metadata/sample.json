@@ -1,6 +1,6 @@
 {
   "name": "City Cats #1",
-  "image": "ipfs://{CID}",
+  "image": "ipfs://QmSJtw38heTHPrHV4GgfCuWCLdSgKZ55JyCgpf62HLmHXw",
   "attributes": [{
     "trait_type": "hidden",
     "value": "hidden"

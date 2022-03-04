@@ -1,0 +1,8 @@
+{
+  "name": "City Cats #1",
+  "image": "ipfs://{CID}",
+  "attributes": [{
+    "trait_type": "hidden",
+    "value": "hidden"
+  }]
+}

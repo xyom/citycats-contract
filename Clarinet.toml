@@ -22,3 +22,7 @@ depends_on = []
 [contracts.commission-trait]
 path = "contracts/external/commission-trait.clar"
 depends_on = []
+
+[contracts.citycats-nft-commission]
+path = "contracts/external/citycats-nft-commission.clar"
+depends_on = []

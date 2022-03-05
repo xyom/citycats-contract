@@ -20,6 +20,7 @@
 (define-constant ERR-MINT-ALREADY-SET (err u106))
 (define-constant ERR-LISTING (err u107))
 (define-constant ERR-FAILED-TO-TRANSFER-STX (err u108))
+(define-constant ERR-NOT-OWNER (err u109))
 
 ;; Withdraw wallets
 (define-constant TREASURE_WALLET 'ST1AE8AYE8GCXVX4711Y9B8D7BKVTYFYQTDKJJ3JR) ;; FIXME
@@ -112,9 +113,11 @@
   (let ((owner (unwrap! (nft-get-owner? CityCats id) false)))
     (or (is-eq tx-sender owner) (is-eq contract-caller owner))))
 
+;; Marketplace function
 (define-read-only (get-listing-in-ustx (id uint))
   (map-get? market id))
 
+;; Marketplace function
 (define-public (list-in-ustx (id uint) (price uint) (comm <commission-trait>))
   (let ((listing  {price: price, commission: (contract-of comm)}))
     (asserts! (is-sender-owner id) ERR-NOT-AUTHORIZED)
@@ -122,6 +125,7 @@
     (print (merge listing {a: "list-in-ustx", id: id}))
     (ok true)))
 
+;; Marketplace function
 (define-public (unlist-in-ustx (id uint))
   (begin
     (asserts! (is-sender-owner id) ERR-NOT-AUTHORIZED)
@@ -129,6 +133,7 @@
     (print {a: "unlist-in-ustx", id: id})
     (ok true)))
 
+;; Marketplace function
 (define-public (buy-in-ustx (id uint) (comm <commission-trait>))
   (let ((owner (unwrap! (nft-get-owner? CityCats id) ERR-NOT-FOUND))
       (listing (unwrap! (map-get? market id) ERR-LISTING))
@@ -140,6 +145,15 @@
     (map-delete market id)
     (print {a: "buy-in-ustx", id: id})
     (ok true)))
+
+;; Manage function
+(define-public (burn (id uint))
+    (let ((owner (unwrap! (nft-get-owner? CityCats id) ERR-NOT-AUTHORIZED)))
+        (asserts! (is-eq owner contract-caller) ERR-NOT-OWNER)
+        (map-delete market id)
+        (nft-burn? CityCats id contract-caller)
+    )
+)
 
 ;; Set base token uri
 (define-public (set-base-token-uri (new-base-token-uri (string-ascii 80)))

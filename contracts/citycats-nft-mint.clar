@@ -70,14 +70,19 @@
     (try! (mint))
     (ok true)))
 
-;; Mint: treasure NFT
 (define-public (treasure-mint (new-owner principal))
+  (begin
+    (try! (pre-treasure-mint new-owner))
+    (ok true)))
+
+;; Mint: treasure NFT
+(define-private (pre-treasure-mint (new-owner principal))
   (let ((treasure-balance (get-treasure-balance new-owner)))
-    (asserts! (> treasure-balance u0) ERR-NO-TREASURE-AMOUNT-REMAINING)
-    (map-set treasure-count
-              new-owner
-              (- treasure-balance u1))
-  (contract-call? .citycats-nft mint new-owner u0)))
+      (asserts! (> treasure-balance u0) ERR-NO-TREASURE-AMOUNT-REMAINING)
+      (map-set treasure-count
+                new-owner
+                (- treasure-balance u1))
+      (contract-call? .citycats-nft mint new-owner u0)))
 
 ;; Mint: pre sale NFT
 (define-private (pre-mint (new-owner principal))

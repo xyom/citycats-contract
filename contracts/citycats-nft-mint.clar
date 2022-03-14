@@ -72,7 +72,16 @@
 
 (define-public (treasure-mint (new-owner principal))
   (begin
-    (try! (pre-treasure-mint new-owner))
+    (try! (pre-treasure-mint new-owner)) (try! (pre-treasure-mint new-owner)) (try! (pre-treasure-mint new-owner)) (try! (pre-treasure-mint new-owner)) (try! (pre-treasure-mint new-owner))
+    (try! (pre-treasure-mint new-owner)) (try! (pre-treasure-mint new-owner)) (try! (pre-treasure-mint new-owner)) (try! (pre-treasure-mint new-owner)) (try! (pre-treasure-mint new-owner))
+    (try! (pre-treasure-mint new-owner)) (try! (pre-treasure-mint new-owner)) (try! (pre-treasure-mint new-owner)) (try! (pre-treasure-mint new-owner)) (try! (pre-treasure-mint new-owner))
+    (try! (pre-treasure-mint new-owner)) (try! (pre-treasure-mint new-owner)) (try! (pre-treasure-mint new-owner)) (try! (pre-treasure-mint new-owner)) (try! (pre-treasure-mint new-owner))
+    (try! (pre-treasure-mint new-owner)) (try! (pre-treasure-mint new-owner)) (try! (pre-treasure-mint new-owner)) (try! (pre-treasure-mint new-owner)) (try! (pre-treasure-mint new-owner))
+    (try! (pre-treasure-mint new-owner)) (try! (pre-treasure-mint new-owner)) (try! (pre-treasure-mint new-owner)) (try! (pre-treasure-mint new-owner)) (try! (pre-treasure-mint new-owner))
+    (try! (pre-treasure-mint new-owner)) (try! (pre-treasure-mint new-owner)) (try! (pre-treasure-mint new-owner)) (try! (pre-treasure-mint new-owner)) (try! (pre-treasure-mint new-owner))
+    (try! (pre-treasure-mint new-owner)) (try! (pre-treasure-mint new-owner)) (try! (pre-treasure-mint new-owner)) (try! (pre-treasure-mint new-owner)) (try! (pre-treasure-mint new-owner))
+    (try! (pre-treasure-mint new-owner)) (try! (pre-treasure-mint new-owner)) (try! (pre-treasure-mint new-owner)) (try! (pre-treasure-mint new-owner)) (try! (pre-treasure-mint new-owner))
+    (try! (pre-treasure-mint new-owner)) (try! (pre-treasure-mint new-owner)) (try! (pre-treasure-mint new-owner)) (try! (pre-treasure-mint new-owner)) (try! (pre-treasure-mint new-owner))
     (ok true)))
 
 ;; Mint: treasure NFT
@@ -125,5 +134,4 @@
 ;; TODO: fill address and the number of NFTs allowed out
 
 ;; Treasure Mint Addresses
-(map-set treasure-count CONTRACT-OWNER u20) ;; FIXME: temporary address and NFT amount for test
-;; TODO: fill address and the number of NFTs allowed out
+(map-set treasure-count CONTRACT-OWNER u50) ;; FIXME: temporary address and NFT amount for test

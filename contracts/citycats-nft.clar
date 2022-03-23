@@ -30,7 +30,7 @@
 (define-data-var metadata-frozen bool false)
 
 ;; Store the root token uri used to query metadata
-(define-data-var base-token-uri (string-ascii 210) "ipfs://QmbM9UhPR8rx1UCZi8oeKd5gQN4X7uuUHgVKw5r8Xbrmox/") ;; FIXME
+(define-data-var base-token-uri (string-ascii 210) "ipfs://QmSmM5vi7iLv7eHerrVfrmFqccjCm7SAuu9YQgZwasJjb7/") ;; FIXME
 (define-constant contract-uri "ipfs://QmSnLYdA9Uq2bcZWnGAVsUA4zapkq1hnusocjo5H63GQ16") ;; FIXME
 
 ;; Provance hash for the images

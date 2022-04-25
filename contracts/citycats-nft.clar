@@ -23,14 +23,17 @@
 (define-constant ERR-NOT-OWNER (err u109))
 
 ;; Withdraw wallets
-(define-constant TREASURE_WALLET 'ST1AE8AYE8GCXVX4711Y9B8D7BKVTYFYQTDKJJ3JR) ;; FIXME
+;; Citycats 1 3%
+(define-constant WALLET_1 'SP39E0V32MC31C5XMZEN1TQ3B0PW2RQSJB8TKQEV9)
+;; Citycats 2 97%
+(define-constant WALLET_2 'ST1AE8AYE8GCXVX4711Y9B8D7BKVTYFYQTDKJJ3JR)
 
 ;; Define Variables
 (define-data-var last-id uint u0)
 (define-data-var metadata-frozen bool false)
 
 ;; Store the root token uri used to query metadata
-(define-data-var base-token-uri (string-ascii 210) "ipfs://QmSmM5vi7iLv7eHerrVfrmFqccjCm7SAuu9YQgZwasJjb7/") ;; FIXME
+(define-data-var base-token-uri (string-ascii 210) "ipfs://QmUi6DqgtwQBdmyCvR63TXDcGsyUpx7oVtVd5gkHAQgfCF/") ;; FIXME
 (define-constant contract-uri "ipfs://QmSnLYdA9Uq2bcZWnGAVsUA4zapkq1hnusocjo5H63GQ16") ;; FIXME
 
 ;; Provance hash for the images
@@ -97,10 +100,8 @@
         (let
         ((current-balance (get-balance new-owner)))
           (begin
-            (if (<= price u0)
-              true
-              (unwrap! (stx-transfer? price tx-sender TREASURE_WALLET) ERR-FAILED-TO-TRANSFER-STX)
-            )
+            (try! (stx-transfer? u15000000 tx-sender WALLET_1)) ;; 0.3 %
+            (try! (stx-transfer? u48500000 tx-sender WALLET_2)) ;; 0.97 %
             (var-set last-id next-id)
             (map-set token-count
               new-owner

@@ -33,8 +33,7 @@
 (define-data-var metadata-frozen bool false)
 
 ;; Store the root token uri used to query metadata
-(define-data-var base-token-uri (string-ascii 210) "ipfs://QmUi6DqgtwQBdmyCvR63TXDcGsyUpx7oVtVd5gkHAQgfCF/") ;; FIXME
-(define-constant contract-uri "ipfs://QmSnLYdA9Uq2bcZWnGAVsUA4zapkq1hnusocjo5H63GQ16") ;; FIXME
+(define-data-var base-token-uri (string-ascii 210) "ipfs://QmecfoHVRtqW46Gfx1doGvZeo2SLUynKqtgiQaA18ZzULX/") ;; FIXME
 
 ;; Store the mint address allowed to trigger minting
 (define-map mint-address bool principal)
@@ -78,10 +77,6 @@
 ;; SIP009: Get the token URI. You can set it to any other URI
 (define-read-only (get-token-uri (token-id uint))
   (ok (some (concat (concat (var-get base-token-uri) (uint-to-string token-id)) ".json"))))
-
-;; Return contract URI
-(define-read-only (get-contract-uri)
-  (ok contract-uri))
 
 ;; Mint new NFT - can only be called from the mint address
 (define-public (mint (new-owner principal) (price uint))

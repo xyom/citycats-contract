@@ -14,7 +14,7 @@
 (define-constant ERR-NO-PRE-SALE-REMAINING (err u204))
 
 ;; Define Variables
-(define-data-var pre-sale-active bool true)
+(define-data-var pre-sale-active bool false)
 (define-data-var public-sale-active bool false)
 
 ;; Get activation of sale

@@ -36,9 +36,6 @@
 (define-data-var base-token-uri (string-ascii 210) "ipfs://QmUi6DqgtwQBdmyCvR63TXDcGsyUpx7oVtVd5gkHAQgfCF/") ;; FIXME
 (define-constant contract-uri "ipfs://QmSnLYdA9Uq2bcZWnGAVsUA4zapkq1hnusocjo5H63GQ16") ;; FIXME
 
-;; Provance hash for the images
-(define-data-var provenance-hash (string-ascii 256) "")
-
 ;; Store the mint address allowed to trigger minting
 (define-map mint-address bool principal)
 
@@ -82,10 +79,6 @@
 (define-read-only (get-token-uri (token-id uint))
   (ok (some (concat (concat (var-get base-token-uri) (uint-to-string token-id)) ".json"))))
 
-;; Return the provenance hash
-(define-read-only (get-provenance-hash)
-  (ok (var-get provenance-hash)))
-
 ;; Return contract URI
 (define-read-only (get-contract-uri)
   (ok contract-uri))
@@ -100,7 +93,7 @@
         (let
         ((current-balance (get-balance new-owner)))
           (begin
-            (try! (stx-transfer? u15000000 tx-sender WALLET_1)) ;; 0.3 %
+            (try! (stx-transfer? u1500000 tx-sender WALLET_1)) ;; 0.3 %
             (try! (stx-transfer? u48500000 tx-sender WALLET_2)) ;; 0.97 %
             (var-set last-id next-id)
             (map-set token-count

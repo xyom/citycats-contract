@@ -135,4 +135,4 @@
 ;; TODO: Fill address and the number of NFTs allowed out
 
 ;; Treasure Mint Addresses
-(map-set treasure-count CONTRACT-OWNER u50) ;; FIXME: It's temporary address and NFT amount for test
+(map-set treasure-count CONTRACT-OWNER u50)

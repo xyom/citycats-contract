@@ -24,9 +24,9 @@
 
 ;; Withdraw wallets
 ;; Citycats 1 3%
-(define-constant WALLET_1 'SP39E0V32MC31C5XMZEN1TQ3B0PW2RQSJB8TKQEV9)
+(define-constant WALLET_1 'SPNWZ5V2TPWGQGVDR6T7B6RQ4XMGZ4PXTEE0VQ0S)
 ;; Citycats 2 97%
-(define-constant WALLET_2 'ST1AE8AYE8GCXVX4711Y9B8D7BKVTYFYQTDKJJ3JR)
+(define-constant WALLET_2 'SP30AYNXCNBTMANSZHZ0FVVGM7W5WF5BJZDX7NW3)
 
 ;; Define Variables
 (define-data-var last-id uint u0)

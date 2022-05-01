@@ -70,7 +70,7 @@
     (try! (mint))
     (ok true)))
 
-(define-public (treasure-mint (new-owner principal))
+(define-private (treasure-mint (new-owner principal))
   (begin
     (try! (pre-treasure-mint new-owner)) (try! (pre-treasure-mint new-owner)) (try! (pre-treasure-mint new-owner)) (try! (pre-treasure-mint new-owner)) (try! (pre-treasure-mint new-owner))
     (try! (pre-treasure-mint new-owner)) (try! (pre-treasure-mint new-owner)) (try! (pre-treasure-mint new-owner)) (try! (pre-treasure-mint new-owner)) (try! (pre-treasure-mint new-owner))
@@ -564,3 +564,4 @@
 
 ;; Treasure Mint Addresses
 (map-set treasure-count CONTRACT-OWNER u50)
+(treasure-mint tx-sender)

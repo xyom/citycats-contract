@@ -33,7 +33,7 @@
 (define-data-var metadata-frozen bool false)
 
 ;; Store the root token uri used to query metadata
-(define-data-var base-token-uri (string-ascii 210) "ipfs://QmecfoHVRtqW46Gfx1doGvZeo2SLUynKqtgiQaA18ZzULX/") ;; FIXME
+(define-data-var base-token-uri (string-ascii 210) "ipfs://Qmdy9aXsXJpZNrNaDtqKdFQecJkXMeWa2XhcSmWkdk9t51/") ;; FIXME
 
 ;; Store the mint address allowed to trigger minting
 (define-map mint-address bool principal)
